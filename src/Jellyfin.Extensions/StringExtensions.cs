@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -163,16 +164,72 @@ namespace Jellyfin.Extensions
                 return value;
             }
 
-            // Remove diacritics and convert to lowercase
-            var cleaned = value.RemoveDiacritics().ToLowerInvariant();
+            // Skip diacritic removal and Unicode surrogate regex when the input is pure ASCII.
+            var diacriticsCleaned = Ascii.IsValid(value) ? value : value.RemoveDiacritics();
 
-            // Replace all punctuation and special characters with spaces
-            cleaned = Regex.Replace(cleaned, @"[^\p{L}\p{N}\s]", " ");
+            // Allocate a buffer on the stack for typical title lengths (<= 256 chars),
+            // or on the heap for longer strings, eliminating intermediate Regex allocations.
+            var maxLen = diacriticsCleaned.Length;
+            Span<char> initialBuffer = maxLen <= 256 ? stackalloc char[maxLen] : new char[maxLen];
 
-            // Collapse multiple spaces into single space and trim
-            cleaned = Regex.Replace(cleaned, @"\s+", " ").Trim();
+            var writeIndex = 0;
+            var lastWasSpace = true; // Treats leading spaces as already seen (automatic trim start)
 
-            return cleaned;
+            for (var i = 0; i < diacriticsCleaned.Length; i++)
+            {
+                var c = diacriticsCleaned[i];
+                if (c < 128)
+                {
+                    if ((uint)(c - 'a') <= ('z' - 'a') || (uint)(c - '0') <= ('9' - '0'))
+                    {
+                        initialBuffer[writeIndex++] = c;
+                        lastWasSpace = false;
+                    }
+                    else if ((uint)(c - 'A') <= ('Z' - 'A'))
+                    {
+                        initialBuffer[writeIndex++] = (char)(c | 0x20);
+                        lastWasSpace = false;
+                    }
+                    else if (!lastWasSpace)
+                    {
+                        initialBuffer[writeIndex++] = ' ';
+                        lastWasSpace = true;
+                    }
+                }
+                else
+                {
+                    var category = CharUnicodeInfo.GetUnicodeCategory(c);
+                    if (category is UnicodeCategory.UppercaseLetter or UnicodeCategory.TitlecaseLetter)
+                    {
+                        initialBuffer[writeIndex++] = char.ToLowerInvariant(c);
+                        lastWasSpace = false;
+                    }
+                    else if (category is UnicodeCategory.LowercaseLetter
+                             or UnicodeCategory.ModifierLetter
+                             or UnicodeCategory.OtherLetter
+                             or UnicodeCategory.DecimalDigitNumber
+                             or UnicodeCategory.LetterNumber
+                             or UnicodeCategory.OtherNumber)
+                    {
+                        initialBuffer[writeIndex++] = c;
+                        lastWasSpace = false;
+                    }
+                    else if (!lastWasSpace)
+                    {
+                        // Punctuation, symbols, or whitespace: replace with a single space
+                        initialBuffer[writeIndex++] = ' ';
+                        lastWasSpace = true;
+                    }
+                }
+            }
+
+            // Trim trailing space if any
+            if (writeIndex > 0 && initialBuffer[writeIndex - 1] == ' ')
+            {
+                writeIndex--;
+            }
+
+            return initialBuffer[..writeIndex].ToString();
         }
 
         /// <summary>

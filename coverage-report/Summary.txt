@@ -1,0 +1,32 @@
+Summary
+  Generated on: 21/10/2026 - 10:27:27
+  Coverage date: 21/10/2026 - 10:22:44 - 21/10/2026 - 10:24:28
+  Parser: MultiReport (2x Cobertura)
+  Assemblies: 1
+  Classes: 10
+  Files: 9
+  Line coverage: 27.2%
+  Covered lines: 321
+  Uncovered lines: 857
+  Coverable lines: 1178
+  Total lines: 1976
+  Branch coverage: 27.8% (109 of 392)
+  Covered branches: 109
+  Total branches: 392
+  Method coverage: 25.3% (18 of 71)
+  Full method coverage: 11.2% (8 of 71)
+  Covered methods: 18
+  Fully covered methods: 8
+  Total methods: 71
+
+Jellyfin.Drawing.Skia                                                                                                                              27.2%
+  Jellyfin.Drawing.Skia.PercentPlayedDrawer                                                                                                           0%
+  Jellyfin.Drawing.Skia.SkiaEncoder                                                                                                                22.9%
+  Jellyfin.Drawing.Skia.SkiaExtensions                                                                                                             33.3%
+  Jellyfin.Drawing.Skia.SkiaHelper                                                                                                                 60.7%
+  Jellyfin.Drawing.Skia.SplashscreenBuilder                                                                                                           0%
+  Jellyfin.Drawing.Skia.StripCollageBuilder                                                                                                           0%
+  Jellyfin.Drawing.Skia.SvgSecurityValidator                                                                                                       81.6%
+  Jellyfin.Drawing.Skia.UnplayedCountIndicator                                                                                                        0%
+  System.Text.RegularExpressions.Generated                                                                                                            0%
+  System.Text.RegularExpressions.Generated.<RegexGenerator_g>F97E958D6A2DE199CA13C8FBAA2FCEE999C2FDFE14274235EC21E5D261293C586__IsRtlTextRegex_0      0%

@@ -1,0 +1,30 @@
+Summary
+  Generated on: 21/10/2026 - 10:38:03
+  Coverage date: 21/10/2026 - 10:34:09
+  Parser: Cobertura
+  Assemblies: 1
+  Classes: 8
+  Files: 8
+  Line coverage: 29.2%
+  Covered lines: 320
+  Uncovered lines: 773
+  Coverable lines: 1093
+  Total lines: 1957
+  Branch coverage: 29.4% (109 of 370)
+  Covered branches: 109
+  Total branches: 370
+  Method coverage: 31.4% (17 of 54)
+  Full method coverage: 12.9% (7 of 54)
+  Covered methods: 17
+  Fully covered methods: 7
+  Total methods: 54
+
+Jellyfin.Drawing.Skia                            29.2%
+  Jellyfin.Drawing.Skia.PercentPlayedDrawer         0%
+  Jellyfin.Drawing.Skia.SkiaEncoder              22.8%
+  Jellyfin.Drawing.Skia.SkiaExtensions           33.3%
+  Jellyfin.Drawing.Skia.SkiaHelper               60.7%
+  Jellyfin.Drawing.Skia.SplashscreenBuilder         0%
+  Jellyfin.Drawing.Skia.StripCollageBuilder         0%
+  Jellyfin.Drawing.Skia.SvgSecurityValidator     81.6%
+  Jellyfin.Drawing.Skia.UnplayedCountIndicator      0%
